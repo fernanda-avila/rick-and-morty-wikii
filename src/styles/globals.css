@@ -1,42 +1,193 @@
+/* styles/globals.css */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #00ee88;
+  --primary-dark: #00cc77;
+  --secondary: #5e2ced;
+  --dark: #0a0520;
+  --darker: #070318;
+  --card-bg: rgba(20, 10, 40, 0.8);
+  --card-border: #5e2ced;
+  --text-main: #f0f0f0;
+  --text-secondary: #b8b8b8;
+  --alive: #00ee88;
+  --dead: #ff4444;
+  --unknown: #888888;
+  --portal-effect: radial-gradient(circle, rgba(0,238,136,0.2) 0%, transparent 70%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Estrutura do Card - Versão Ultra Estilizada */
+.character-card {
+  position: relative;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(94, 44, 237, 0.4);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(6px);
+  z-index: 1;
+  transform-style: preserve-3d;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+.character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--portal-effect);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.character-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 0 20px 40px rgba(94, 44, 237, 0.6),
+              0 0 0 2px rgba(0, 238, 136, 0.5);
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+.character-card:hover::before {
+  opacity: 1;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Efeito de Brilho no Hover */
+.character-card:hover .character-image {
+  filter: brightness(1.1) saturate(1.2);
+  box-shadow: inset 0 0 20px rgba(0, 238, 136, 0.4);
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.character-image-container {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid var(--card-border);
+}
+
+.character-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  transition: all 0.4s ease;
+  transform-origin: center center;
+}
+
+/* Status Badge - Estilo Portal */
+.character-status {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: 0 0 10px currentColor;
+  z-index: 2;
+}
+
+.character-status::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  70% { transform: scale(1.3); opacity: 0.2; }
+  100% { transform: scale(0.95); opacity: 0.7; }
+}
+
+.status-alive {
+  background-color: var(--alive);
+  color: var(--alive);
+}
+
+.status-dead {
+  background-color: var(--dead);
+  color: var(--dead);
+}
+
+.status-unknown {
+  background-color: var(--unknown);
+  color: var(--unknown);
+}
+
+/* Card Content - Estilo Sci-Fi */
+.card-content {
+  padding: 1.5rem;
+  position: relative;
+}
+
+.card-content::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+}
+
+.character-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  text-shadow: 0 0 5px rgba(0, 238, 136, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.character-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.character-species {
+  margin-left: auto;
+  padding: 0.2rem 0.5rem;
+  background: rgba(94, 44, 237, 0.2);
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.character-location {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(94, 44, 237, 0.3);
+}
+
+.character-location strong {
+  display: block;
+  color: var(--text-main);
+  margin-top: 0.3rem;
+}
+
+/* Efeito de Dimensão no Hover */
+.character-card:hover .character-name {
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(0, 238, 136, 0.6);
+}
+
+.character-card:hover .character-species {
+  background: rgba(94, 44, 237, 0.4);
+  transform: scale(1.05);
+}
+
+/* Efeito de Portal ao Clicar */
+@keyframes portal {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.8); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.character-card:active {
+  animation: portal 0.3s ease;
 }
