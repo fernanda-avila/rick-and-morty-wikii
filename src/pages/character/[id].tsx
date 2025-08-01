@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
-import { characters } from "../data/characters";
+import { characters } from "../../data/characters";
 
 export default function CharacterPage() {
   const router = useRouter();
